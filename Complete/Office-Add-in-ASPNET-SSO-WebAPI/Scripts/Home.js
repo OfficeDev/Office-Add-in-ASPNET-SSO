@@ -10,12 +10,12 @@ Office.initialize = function (reason) {
     // After the DOM is loaded, app-specific code can run.
     // Add any initialization logic to this function.
 	 $("#getGraphAccessTokenButton").click(function () {
-                getOneDriveFiles();
+                getOneDriveItems();
             });
     });
 }
 
-function getOneDriveFiles() {
+function getOneDriveItems() {
 
 	// Ask the Office host for an access token to the add-in. If the user is 
 	// not signed in, s/he is prompted to sign in.
