@@ -37,7 +37,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                 ConfidentialClientApplication cca =
                     new ConfidentialClientApplication(ConfigurationManager.AppSettings["ida:ClientID"],
                                                       "https://localhost:44356", clientCred, null, null);
-                string[] graphScopes = { "User.Read", "Files.Read.All" };
+                string[] graphScopes = { "profile", "Files.Read.All" };
 
                 // The AcquireTokenOnBehalfOfAsync method will first look in the MSAL in memory cache for a
                 // matching access token. Only if there isn't one, does it initiate the "on behalf of" flow

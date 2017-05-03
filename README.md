@@ -2,7 +2,7 @@
 
 The `getAccessTokenAsync` API in Office.js enables users who are signed into Office to get access to an AAD-protected add-in and to Microsoft Graph without needing to sign-in again. This sample is built on ASP.NET and Microsoft Identity Library (MSAL). 
 
- > Note: The getAccessTokenAsync API is in preview.
+ > Note: The `getAccessTokenAsync` API is in preview.
 
 ## Table of Contents
 * [Change History](#change-history)
