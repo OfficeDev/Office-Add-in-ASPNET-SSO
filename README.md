@@ -25,7 +25,7 @@ May 10, 2017:
 
 ## To use the project
 
-This sample is meant to accompany the walkthrough at: [Create an ASP.NET Office Add-in that uses Single Sign-on (preview)](https://dev.office.com/docs/add-ins/develop/create-sso-office-add-ins-aspnet.md)
+This sample is meant to accompany the walkthrough at: [Create an ASP.NET Office Add-in that uses Single Sign-on (preview)](https://dev.office.com/docs/add-ins/develop/create-sso-office-add-ins-aspnet)
 
 There are two versions of the sample, in the folders Before and Completed.
 
