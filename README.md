@@ -21,7 +21,7 @@ May 10, 2017:
 
 * An Office 365 account.
 * Office 2016, Version 1704, build 16.0.8027.1000 Click-to-Run, or later.
-* Visual Studio 2017, version 15.3 (26424.2-Preview) or later
+* Visual Studio 2017, version 15.3.0 Preview 3 or later
 
 ## To use the project
 

@@ -134,7 +134,6 @@
     <WebApplicationId>{application GUID here}</WebApplicationId>
     <WebApplicationResource>api://localhost:44355/{application_GUID here}</WebApplicationResource>
     <WebApplicationScopes>
-      <WebApplicationScope>profile</WebApplicationScope>
       <WebApplicationScope>openid</WebApplicationScope>
       <WebApplicationScope>offline_access</WebApplicationScope>
       <WebApplicationScope>files.read.all</WebApplicationScope>
