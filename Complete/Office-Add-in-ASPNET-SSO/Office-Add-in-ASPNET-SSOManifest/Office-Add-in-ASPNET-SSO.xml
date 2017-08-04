@@ -131,13 +131,15 @@
         <bt:String id="Contoso.GetStarted.Description" DefaultValue="The SSO ASP.NET sample loaded succesfully. Go to the HOME tab and click the 'Show Add-in' button to get started." />
       </bt:LongStrings>
     </Resources>
-    <WebApplicationId>{application GUID here}</WebApplicationId>
-    <WebApplicationResource>api://localhost:44355/{application_GUID here}</WebApplicationResource>
-    <WebApplicationScopes>
-      <WebApplicationScope>openid</WebApplicationScope>
-      <WebApplicationScope>offline_access</WebApplicationScope>
-      <WebApplicationScope>files.read.all</WebApplicationScope>
-    </WebApplicationScopes>
+    <WebApplicationInfo>
+      <Id>{application GUID here}</Id>
+      <Resource>api://localhost:44355/{application_GUID here}</Resource>
+      <Scopes>
+        <Scope>openid</Scope>
+        <Scope>offline_access</Scope>
+        <Scope>files.read.all</Scope>
+      </Scopes>
+    </WebApplicationInfo> 
   </VersionOverrides>
   <!-- End Add-in Commands Mode integration. -->
 
