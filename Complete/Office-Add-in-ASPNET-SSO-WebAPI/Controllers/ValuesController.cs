@@ -36,7 +36,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                 ClientCredential clientCred = new ClientCredential(ConfigurationManager.AppSettings["ida:Password"]);
                 ConfidentialClientApplication cca =
                     new ConfidentialClientApplication(ConfigurationManager.AppSettings["ida:ClientID"],
-                                                      "https://localhost:44356", clientCred, null, null);
+                                                      "https://localhost:44355", clientCred, null, null);
                 string[] graphScopes = { "Files.Read.All" };
 
                 // The AcquireTokenOnBehalfOfAsync method will first look in the MSAL in memory cache for a
