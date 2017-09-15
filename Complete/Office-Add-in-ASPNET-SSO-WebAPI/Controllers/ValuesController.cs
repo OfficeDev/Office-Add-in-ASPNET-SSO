@@ -11,9 +11,11 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using Office_Add_in_ASPNET_SSO_WebAPI.Helpers;
 using Office_Add_in_ASPNET_SSO_WebAPI.Models;
+using System;
 
 namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 {
@@ -37,12 +39,32 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                 ConfidentialClientApplication cca =
                     new ConfidentialClientApplication(ConfigurationManager.AppSettings["ida:ClientID"],
                                                       "https://localhost:44355", clientCred, null, null);
-                string[] graphScopes = { "Files.Read.All" };
-
-                // The AcquireTokenOnBehalfOfAsync method will first look in the MSAL in memory cache for a
-                // matching access token. Only if there isn't one, does it initiate the "on behalf of" flow
-                // with the Azure AD V2 endpoint.
-                AuthenticationResult result = await cca.AcquireTokenOnBehalfOfAsync(graphScopes, userAssertion, "https://login.microsoftonline.com/common/oauth2/v2.0");
+                string[] graphScopes = { "Files.Read.All" };                
+                AuthenticationResult result = null;
+                try
+                {
+                    // The AcquireTokenOnBehalfOfAsync method will first look in the MSAL in memory cache for a
+                    // matching access token. Only if there isn't one, does it initiate the "on behalf of" flow
+                    // with the Azure AD V2 endpoint.
+                    result = await cca.AcquireTokenOnBehalfOfAsync(graphScopes, userAssertion, "https://login.microsoftonline.com/common/oauth2/v2.0");
+                }
+                catch (MsalUiRequiredException e)
+                {
+                    // If multi-factor authentication is required by the MS Graph resource an
+                    // the user has not yet provided it, AAD will throw an exception containing a 
+                    // Claims property.
+                    if (String.IsNullOrEmpty(e.Claims))
+                    {
+                        throw e;
+                    }
+                    else
+                    {
+                        // The Claims property value must be passed to the client which will pass it
+                        // to the Office host, which will then include it in a request for a new token.
+                        // AAD will prompt the user for all required forms of authentication.
+                        throw new HttpException(e.Claims);
+                    }   
+                }
 
                 // Get the names of files and folders in OneDrive for Business by using the Microsoft Graph API. Select only properties needed.
                 var fullOneDriveItemsUrl = GraphApiHelper.GetOneDriveItemNamesUrl("?$select=name&$top=3");

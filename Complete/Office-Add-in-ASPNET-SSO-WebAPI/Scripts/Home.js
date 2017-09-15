@@ -10,28 +10,16 @@ Office.initialize = function (reason) {
     // After the DOM is loaded, app-specific code can run.
     // Add any initialization logic to this function.
 	 $("#getGraphAccessTokenButton").click(function () {
-                getOneDriveItems();
+                getOneDriveFiles();
             });
     });
 }
 
-function getOneDriveItems() {
+function getOneDriveFiles() {
 
 	// Ask the Office host for an access token to the add-in. If the user is 
-	// not signed in, s/he is prompted to sign in.
-	Office.context.auth.getAccessTokenAsync({ forceConsent: false },
-		function (result) {
-            if (result.status === "succeeded") {
-                accessToken = result.value;
-                getData("/api/values", accessToken);
-			}
-			else {
-				console.log("Code: " + result.error.code);
-				console.log("Message: " + result.error.message);
-				console.log("name: " + result.error.name);
-				document.getElementById("getGraphAccessTokenButton").disabled = true;
-			}
-		});
+    // not signed in, s/he is prompted to sign in.
+    getDataWithToken({ forceConsent: false });
 }	
 
 // Calls the specified URL or route (in the same domain as the add-in) 
@@ -47,10 +35,35 @@ function getData(relativeUrl, accessToken) {
         showResult(result);
     })
     .fail(function (result) {
-        console.log(result.error);
-    });
+        var exceptionMessage = JSON.parse(result.responseText).ExceptionMessage;
+
+        // When the failure is because Microsoft Graph requires an additional form of
+        // authentication, the exceptionMessage will be a JSON string containing "capolids".
+        // In that case have the Office host get a new token using the exception message,
+        // which tells AAD to prompt the user for all required forms of authentication.
+        if (exceptionMessage.indexOf("capolids") !== -1) {
+            getDataWithToken({ authChallenge: exceptionMessage });
+        } else {
+            console.log(result.error);
+        }
+    }); 
 }
 
+function getDataWithToken(options) {
+    Office.context.auth.getAccessTokenAsync(options,
+        function (result) {
+            if (result.status === "succeeded") {
+                accessToken = result.value;
+                getData("/api/values", accessToken);
+            }
+            else {
+                console.log("Code: " + result.error.code);
+                console.log("Message: " + result.error.message);
+                console.log("name: " + result.error.name);
+                document.getElementById("getGraphAccessTokenButton").disabled = true;
+            }
+        });
+}
 
 // Displays the data, assumed to be an array.
 function showResult(data) {	
