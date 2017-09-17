@@ -20,7 +20,9 @@ The `getAccessTokenAsync` API in Office.js enables users who are signed into Off
 
 * An Office 365 account.
 * Office 2016, Version 1710, build 16.0.8605.1000 Click-to-Run, or later. You many need to be an Office Insider to obtain this version. For more information, see [Be an Office Insider](https://products.office.com/en-us/office-insider?tab=tab-1) .
-* Visual Studio 2017, version 15.3.0 Preview 3 or later
+* Visual Studio 2017, version 15.4.0 Preview 1 or later
+
+> **Important!** The packages.config in the root of the web API project, specifies version `1.1.1-alpha0393` of Microsoft.Identity.Client, the MSAL library. You should verify that this version (or later) gets installed after you press F5 for the first time: On the **Tools** menu, navigate to **Nuget Package Manager** | **Manage Nuget Packages for Solution** | **Installed**. Scroll to **Microsoft.Identity.Client** to see the installed version. If it is earlier than `1.1.1-alpha0393` (or does not appear on the **Installed** list), then navigate to **Nuget Package Manager** | **Package Manager Console**. At the console run the command `Install-Package Microsoft.Identity.Client -Version 1.1.1-alpha0393 -Source https://www.myget.org/F/aad-clients-nightly/api/v3/index.json`.
 
 ## To use the project
 
