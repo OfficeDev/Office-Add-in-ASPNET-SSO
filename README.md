@@ -46,6 +46,8 @@ Questions about Microsoft Office 365 development in general should be posted to 
 * [Office Dev Center](http://dev.office.com/)
 * More Office Add-in samples at [OfficeDev on Github](https://github.com/officedev)
 
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
 ## Copyright
 Copyright (c) 2017 Microsoft Corporation. All rights reserved.
 
