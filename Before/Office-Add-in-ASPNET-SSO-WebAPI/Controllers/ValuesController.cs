@@ -11,11 +11,12 @@ using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using Office_Add_in_ASPNET_SSO_WebAPI.Helpers;
 using Office_Add_in_ASPNET_SSO_WebAPI.Models;
 using System;
+using System.Net;
+using System.Net.Http;
 
 namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 {

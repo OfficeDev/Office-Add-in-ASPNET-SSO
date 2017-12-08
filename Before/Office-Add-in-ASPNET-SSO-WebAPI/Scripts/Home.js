@@ -26,3 +26,10 @@ function showResult(data) {
 		'</span></li>');
 	}
 }
+
+function logError(result) {
+    console.log("Status: " + result.status);
+    console.log("Code: " + result.error.code);
+    console.log("Name: " + result.error.name);
+    console.log("Message: " + result.error.message);
+}
