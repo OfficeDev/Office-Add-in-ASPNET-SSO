@@ -137,7 +137,7 @@
       <Scopes>
         <Scope>openid</Scope>
         <Scope>offline_access</Scope>
-	   <Scope>profile</Scope>
+	    <Scope>profile</Scope>
         <Scope>files.read.all</Scope>
       </Scopes>
     </WebApplicationInfo> 
