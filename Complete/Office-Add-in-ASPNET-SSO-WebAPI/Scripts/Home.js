@@ -69,6 +69,7 @@ function handleServerSideErrors(result) {
     // from a AADSTS50076 (a 2FA challenge) to have a Message property but no ExceptionMessage.
     var message = JSON.parse(result.responseText).Message;
 
+
     // Results from other errors (other than AADSTS50076) will have an ExceptionMessage property.
     var exceptionMessage = JSON.parse(result.responseText).ExceptionMessage;
 
@@ -82,24 +83,26 @@ function handleServerSideErrors(result) {
             getDataWithToken({ authChallenge: claimsAsString });
         }
     }
+    else if (exceptionMessage) {
 
-    // If consent was not granted (or was revoked) for one or more permissions,
-    // the add-in's web service relays the AADSTS65001 error. Try to get the token
-    // again with the forceConsent option.
-    if (exceptionMessage.indexOf('AADSTS65001') !== -1) {
-        showResult(['Please grant consent to this add-in to access your Microsoft Graph data.']);        
-        /*
-            THE FORCE CONSENT OPTION IS NOT AVAILABLE IN DURING PREVIEW. WHEN SSO FOR
-            OFFICE ADD-INS IS RELEASED, REMOVE THE showResult LINE ABOVE AND UNCOMMENT
-            THE FOLLOWING LINE.
-        */
-       // getDataWithToken({ forceConsent: true });
-    }
-    else if (exceptionMessage.indexOf("AADSTS70011: The provided value for the input parameter 'scope' is not valid.") !== -1) {
-        showResult(['The add-in is asking for a type of permission that is not recognized.']);
-    }
-    else if (exceptionMessage.indexOf('Missing access_as_user.') !== -1) {
-        showResult(['Microsoft Office does not have permission to get Microsoft Graph data on behalf of the current user.']);
+        // If consent was not granted (or was revoked) for one or more permissions,
+        // the add-in's web service relays the AADSTS65001 error. Try to get the token
+        // again with the forceConsent option.
+        if (exceptionMessage.indexOf('AADSTS65001') !== -1) {
+            showResult(['Please grant consent to this add-in to access your Microsoft Graph data.']);        
+            /*
+                THE FORCE CONSENT OPTION IS NOT AVAILABLE DURING PREVIEW. WHEN SSO FOR
+                OFFICE ADD-INS IS RELEASED, REMOVE THE showResult LINE ABOVE AND UNCOMMENT
+                THE FOLLOWING LINE.
+            */
+            // getDataWithToken({ forceConsent: true });
+        }
+        else if (exceptionMessage.indexOf("AADSTS70011: The provided value for the input parameter 'scope' is not valid.") !== -1) {
+            showResult(['The add-in is asking for a type of permission that is not recognized.']);
+        }
+        else if (exceptionMessage.indexOf('Missing access_as_user.') !== -1) {
+            showResult(['Microsoft Office does not have permission to get Microsoft Graph data on behalf of the current user.']);
+        }
     }
     // If the token sent to MS Graph is expired or invalid, start the whole process over.
     else if (result.code === 'InvalidAuthenticationToken') {
