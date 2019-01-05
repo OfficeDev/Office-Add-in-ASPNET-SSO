@@ -20,6 +20,9 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Helpers
     {
         /// <summary>
         /// Gets any JSON array from any OData endpoint that requires an access token.
+        /// Note: If itemsUrl includes a query parameter and any part of the parameter 
+        /// comes from user input, be sure that it is sanitized so that it cannot be used in
+        /// a Response header injection attack.
         /// </summary>
         /// <typeparam name="T">The .NET type to which the members of the array will be converted.</typeparam>
         /// <param name="itemsUrl">The URL of the OData endpoint.</param>

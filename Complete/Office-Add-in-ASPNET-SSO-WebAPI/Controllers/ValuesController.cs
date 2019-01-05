@@ -80,8 +80,8 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 
                     // If the call to AAD contained at least one scope that AAD does not recognize,
                     // AAD returns "400 Bad Request" with error AADSTS70011. MSAL throws a 
-                    // MsalUiRequiredException (which inherites from MsalServiceException) with this 
-                    // information. Tthe client should inform the user.
+                    // MsalUiRequiredException (which inherits from MsalServiceException) with this 
+                    // information. The client should inform the user.
                     || (e.Message.StartsWith("AADSTS70011: The provided value for the input parameter 'scope' is not valid.")))
                     {
                         return SendErrorToClient(HttpStatusCode.Forbidden, e, null);
@@ -96,6 +96,8 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                 }
 
                 // Get the names of files and folders in OneDrive for Business by using the Microsoft Graph API. Select only properties needed.
+                // Note that the parameter is hardcoded. If you reuse this code in a production add-in and any part of the query parameter comes 
+                // from user input, be sure that it is sanitized so that it cannot be used in a Response header injection attack.
                 var fullOneDriveItemsUrl = GraphApiHelper.GetOneDriveItemNamesUrl("?$select=name&$top=3");
 
                 IEnumerable<OneDriveItem> filesResult;
