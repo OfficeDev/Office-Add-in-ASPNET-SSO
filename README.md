@@ -21,7 +21,7 @@ The `getAccessTokenAsync` API in Office.js enables users who are signed into Off
 ## Prerequisites
 
 * An Office 365 account.
-* Office 2016, Version 1710, build 16.0.8605.1000 Click-to-Run, or later. You many need to be an Office Insider to obtain this version. For more information, see [Be an Office Insider](https://products.office.com/en-us/office-insider?tab=tab-1) .
+* During the preview phase, the SSO requires Office 365 (the subscription version of Office, also called “Click to Run”). You should use the latest monthly version and build from the Insiders channel. You need to be an Office Insider to get this version. For more information, see [Be an Office Insider](https://products.office.com/office-insider?tab=tab-1). Please note that when a build graduates to the production semi-annual channel, support for preview features, including SSO, is turned off for that build.
 * Visual Studio 2017, version 15.4.0 Preview 1 or later
 
 ## Deviations from Best Practices
