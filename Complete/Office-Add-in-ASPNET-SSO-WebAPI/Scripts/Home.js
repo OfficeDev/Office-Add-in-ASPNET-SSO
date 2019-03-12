@@ -136,9 +136,14 @@ function handleClientSideErrors(result) {
             }          
             break;        
         case 13003: 
-            // The user is logged in with an account that is neither work or school, nor Micrososoft Account.
+            // The user is logged in with an account that is neither work or school, nor Microsoft Account.
             showResult(['Please sign out of Office and sign in again with a work or school account, or Microsoft Account. Other kinds of accounts, like corporate domain accounts do not work.']);
             break;        
+        case 13005:
+            // The Office host has not been authorized to the add-in's web service
+            // or the user has not granted the service permission to their `profile`.
+            getDataWithToken({ forceConsent: true });
+            break;
         case 13006:
             // Unspecified error in the Office host.
             showResult(['Please save your work, sign out of Office, close all Office applications, and restart this Office application.']);
@@ -148,7 +153,7 @@ function handleClientSideErrors(result) {
             showResult(['That operation cannot be done at this time. Please try again later.']);
             break;
         case 13008:
-            // The user tiggered an operation that calls getAccessTokenAsync before a previous call of it completed.
+            // The user triggered an operation that calls getAccessTokenAsync before a previous call of it completed.
             showResult(['Please try that operation again after the current operation has finished.']);
             break;
         case 13009:
