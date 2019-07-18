@@ -1,13 +1,13 @@
 ---
 topic: sample
 products:
-- Excel
-- PowerPoint
-- Word
-- Office 365
+- office-excel
+- office-powerpoint
+- office-word
+- office-365
 languages:
-- JavaScript
-- ASP.NET
+- javascript
+- aspx
 extensions:
   contentType: samples
   technologies:
