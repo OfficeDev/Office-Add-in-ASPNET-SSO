@@ -26,13 +26,20 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 		// GET api/values
 		public async Task<HttpResponseMessage> Get()
 		{
-			bool idTokenFromSSO = false;
-			var claim = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope");
-			if (claim != null)
-			{
-				string[] addinScopes = claim.Value.Split(' ');
-				idTokenFromSSO = addinScopes.Contains("access_as_user");
-			}
+            //bool idTokenFromSSO = false;
+            //var claim = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope");
+            //if (claim != null)
+            //{
+            //	string[] addinScopes = claim.Value.Split(' ');
+            //	idTokenFromSSO = addinScopes.Contains("access_as_user");
+            //}
+
+            // OWIN middleware validated the audience and issuer, but the scope must also be validated; must contain "access_as_user".
+            string[] addinScopes = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope").Value.Split(' ');
+            if (!(addinScopes.Contains("access_as_user")))
+            {
+                return SendErrorToClient(HttpStatusCode.Unauthorized, null, "Missing access_as_user.");
+            }
 
             // Assemble all the information that is needed to get a token for Microsoft Graph using the "on behalf of" flow.
             string bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext.ToString(); 
