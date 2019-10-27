@@ -38,7 +38,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
             string[] addinScopes = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope").Value.Split(' ');
             if (!(addinScopes.Contains("access_as_user")))
             {
-                return SendErrorToClient(HttpStatusCode.Unauthorized, null, "Missing access_as_user.");
+                return HttpErrorHelper.SendErrorToClient(HttpStatusCode.Unauthorized, null, "Missing access_as_user.");
             }
 
             // Assemble all the information that is needed to get a token for Microsoft Graph using the "on behalf of" flow.
