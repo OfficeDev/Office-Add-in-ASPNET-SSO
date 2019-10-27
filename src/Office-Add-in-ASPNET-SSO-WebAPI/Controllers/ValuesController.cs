@@ -26,14 +26,6 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 		// GET api/values
 		public async Task<HttpResponseMessage> Get()
 		{
-            //bool idTokenFromSSO = false;
-            //var claim = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope");
-            //if (claim != null)
-            //{
-            //	string[] addinScopes = claim.Value.Split(' ');
-            //	idTokenFromSSO = addinScopes.Contains("access_as_user");
-            //}
-
             // OWIN middleware validated the audience and issuer, but the scope must also be validated; must contain "access_as_user".
             string[] addinScopes = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/scope").Value.Split(' ');
             if (!(addinScopes.Contains("access_as_user")))
@@ -42,6 +34,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
             }
 
             // Assemble all the information that is needed to get a token for Microsoft Graph using the "on behalf of" flow.
+            // Beginning with MSAL.NET 3.x.x, the bootstrapContext is just the bootstrap token itself.
             string bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext.ToString(); 
             UserAssertion userAssertion = new UserAssertion(bootstrapContext);
 
@@ -50,6 +43,8 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                                                           .WithClientSecret(ConfigurationManager.AppSettings["ida:Password"])
                                                           .Build();
 
+            // MSAL.NET adds the profile, offline_access, and openid scopes itself. It will throw an error if you add
+            // them redundantly here.
 			string[] graphScopes = { "https://graph.microsoft.com/Files.Read.All" };
 
 			// Get the access token for Microsoft Graph.
@@ -65,9 +60,10 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 				{
 					string responseMessage = String.Format("{{\"AADError\":\"AADSTS50076\",\"Claims\":{0}}}", e.Claims);
 					return HttpErrorHelper.SendErrorToClient(HttpStatusCode.Forbidden, null, responseMessage);
+                    // The client should recall the getAccessToken function and pass the claims string as the 
+                    // authChallenge value in the function's Options parameter.
 				}
 
-				// Handle lack of consent.
 				// Handle invalid scope (permission).
 				if ((e.Message.StartsWith("AADSTS65001")) || (e.Message.StartsWith("AADSTS70011: The provided value for the input parameter 'scope' is not valid.")))
 				{
