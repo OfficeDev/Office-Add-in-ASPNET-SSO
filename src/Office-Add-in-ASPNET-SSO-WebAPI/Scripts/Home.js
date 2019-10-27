@@ -6,50 +6,93 @@
 */
 
 
+
 Office.initialize = function (reason) {
-	// Checks for the DOM to load using the jQuery ready function.
+
     $(document).ready(function () {
-		// After the DOM is loaded, app-specific code can run.
-		// Add any initialization logic to this function.
+        $('#getGraphDataButton').click(getGraphData);
+    });
+};
 
-        $("#getGraphAccessTokenButton").click(function () {
-			getOneDriveFiles();
-		});
-	});
-}
+var retryGetAccessToken = 0;
 
-var timesGetOneDriveFilesHasRun = 0;
-var triedWithoutForceConsent = false;
+async function getGraphData() {
+    try {
+        let bootstrapToken = await OfficeRuntime.auth.getAccessToken({ allowSignInPrompt: true });
 
-function getOneDriveFiles() {
-	timesGetOneDriveFilesHasRun++;
-	triedWithoutForceConsent = true;
-   // getDataWithToken({ asyncContext: 'foo', forceConsent: false, forceAddAccount: false, authChallenge: '' });
-
-    // To test the non-SSO authorization path, comment out the preceding line and uncomment the following line.
-
-    dialogFallback();
-
+        // The /api/values controller will make the token exchange and use the 
+        // access token it gets back to make the call to MS Graph.
+        // Server-side errors are caught in the .fail block of getData.
+        getData("/api/values", bootstrapToken);        
+    }
+    catch (exception) {
+        // The only exceptions caught here are exceptions in your code in the try block
+        // and errors returned from the call of `getAccessToken` above.
+        if (exception.code) {
+            handleClientSideErrors(exception);
+        }
+        else {
+            showResult(["EXCEPTION: " + JSON.stringify(exception)]);
+        }
+    }
 }
 
 function getData(relativeUrl, accessToken) {
-	$.ajax({
-		url: relativeUrl,
-		headers: { "Authorization": "Bearer " + accessToken },
-		type: "GET"
-	})
-	.done(function (result) {
-        writeFileNamesToOfficeDocument(result)
-            .then(function () {
-                showResult(["Your data has been added to the document."]);
-            })
-            .catch(function (error) {
-                showResult([error.toString()]);
-            });
-	})
-	.fail(function (result) {
-		handleServerSideErrors(result);
-	});
+
+    $.ajax({
+        url: relativeUrl,
+        headers: { "Authorization": "Bearer " + accessToken },
+        type: "GET"
+    })
+        .done(function (result) {
+            writeFileNamesToOfficeDocument(result)
+                .then(function () {
+                    showResult(["Your data has been added to the document."]);
+                })
+                .catch(function (error) {
+                    // The error from writeFileNamesToOfficeDocument will begin 
+                    // "Unable to add filenames to document."
+                    showResult([JSON.stringify(error)]);
+                });
+        })
+        .fail(function (result) {
+            handleServerSideErrors(result);
+        });
+}
+
+
+function handleClientSideErrors(error) {
+    switch (error.code) {
+
+        case 13001:
+            // No one is signed into Office. If the add-in cannot be effectively used when no one 
+            // is logged into Office, then the first call of getAccessToken should pass the 
+            // `allowSignInPrompt: true` option.
+            showResult(["No one is signed into Office. But you can use many of the add-ins functions anyway. If you want to log in, press the Get OneDrive File Names button again."]);
+            break;
+        case 13002:
+            // The user aborted the consent prompt. If the add-in cannot be effectively used when consent
+            // has not been granted, then the first call of getAccessToken should pass the `allowConsentPrompt: true` option.
+            showResult(["You can use many of the add-ins functions even though you have not granted consent. If you want to grant consent, press the Get OneDrive File Names button again."]);
+            break;
+        case 13006:
+            // Only seen in Office on the Web.
+            showResult(["Office on the Web is experiencing a problem. Please sign out of Office, close the browser, and then start again."]);
+            break;
+        case 13008:
+            // Only seen in Office on the Web.
+            showResult(["Office is still working on the last operation. When it completes, try this operation again."]);
+            break;
+        case 13010:
+            // Only seen in Office on the Web.
+            showResult(["Follow the instructions to change your browser's zone configuration."]);
+            break;
+        default:
+            // For all other errors, including 13000, 13003, 13005, 13007, 13012, and 50001, fall back
+            // to non-SSO sign-in.
+            dialogFallback();
+            break;
+    }
 }
 
 function handleServerSideErrors(result) {
@@ -76,106 +119,28 @@ function handleServerSideErrors(result) {
 
 	if (exceptionMessage) {
 
-		// If consent was not granted (or was revoked) for one or more permissions,
-		// the add-in's web service relays the AADSTS65001 error. Try to get the token
-		// again with the forceConsent option.
-		if (exceptionMessage.indexOf('AADSTS65001') !== -1) {
-			showResult(['Please grant consent to this add-in to access your Microsoft Graph data.']);
-			dialogFallback();
-			return;
-		}
-		else if (exceptionMessage.indexOf("AADSTS70011: The provided value for the input parameter 'scope' is not valid.") !== -1) {
-			showResult(['The add-in is asking for a type of permission that is not recognized.']);
-			return;
-		}
-		else if (exceptionMessage.indexOf('Missing access_as_user.') !== -1) {
-			showResult(['Microsoft Office does not have permission to get Microsoft Graph data on behalf of the current user.']);
-			return;
-		}
-	}
+        // On rare occasions the bootstrap token is unexpired when Office validates it,
+        // but expires by the time it is sent to AAD for exchange. AAD will respond
+        // with "The provided value for the 'assertion' is not valid. The assertion has expired."
+        // Retry the call of getAccessToken (no more than once). This time Office will return a 
+        // new unexpired bootstrap token.
+        if ((exceptionMessage.indexOf("The provided value for the 'assertion' is not valid. The assertion has expired.") !== -1)
+            && (retryGetAccessToken <= 0))
+        {
+            retryGetAccessToken++;
+            getGraphData();
+        }
+        else
+        {
+            // For debugging: 
+            // showResult(["AAD ERROR: " + JSON.stringify(exchangeResponse)]);  
 
-	// If the token sent to MS Graph is expired or invalid, start the whole process over.
-	if (result.code === 'InvalidAuthenticationToken') {
-		timesGetOneDriveFilesHasRun = 0;
-		triedWithoutForceConsent = false;
-		getOneDriveFiles();
-	}
-	else {
-		logError("Unspecified server side error " + result);
+            // For all other AAD errors, fallback to non-SSO sign-in.                            
+            dialogFallback();
+        }
 	}
 }
 
-function handleClientSideErrors(result) {
-
-	// TODO: Handle forGraphAccess error once that's implemented and fallback to dialog.
-
-	switch (result.error.code) {
-
-		case 13001:
-			// The user is not logged in, or the user cancelled without responding a
-			// prompt to provide a 2nd authentication factor. (See comment about two-
-			// factor authentication in the fail callback of the getData method.)
-			// Either way start over and force a sign-in. 
-			getDataWithToken({ forceAddAccount: true });
-			break;
-		case 13002:
-			// The user's sign-in or consent was aborted. Ask the user to try again
-			// but no more than once again.
-			if (timesGetOneDriveFilesHasRun < 2) {
-				showResult(['Your sign-in or consent was aborted before completion. Please try that operation again.']);
-			} else {
-				logError("13002 consent aborted. " + result);
-			}
-			break;
-		case 13003:
-			// The user is logged in with an account that is neither work or school, nor Microsoft Account.
-			showResult(['Please sign out of Office and sign in again with a work or school account, or Microsoft Account. Other kinds of accounts, like corporate domain accounts do not work.']);
-			break;
-		case 13005:
-			// The Office host has not been authorized to the add-in's web service
-			// or the user has not granted the service permission to their `profile`.
-			getDataWithToken({ forceConsent: true });
-			break;
-		case 13006:
-			// Unspecified error in the Office host.
-			showResult(['Please save your work, sign out of Office, close all Office applications, and restart this Office application.']);
-			break;
-		case 13007:
-			// The Office host cannot get an access token to the add-ins web service/application.
-            showResult(['That operation cannot be done at this time. Please try again later. (13007)']);
-			break;
-		case 13008:
-			// The user triggered an operation that calls getAccessTokenAsync before a previous call of it completed.
-			showResult(['Please try that operation again after the current operation has finished.']);
-			break;
-		case 13009:
-			// The add-in does not support forcing consent. Try signing the user in without forcing consent, unless
-			// that's already been tried.
-			if (triedWithoutForceConsent) {
-				showResult(['Please sign out of Office and sign in again with a work or school account, or Microsoft Account. Other kinds of accounts, like corporate domain accounts do not work.']);
-			} else {
-				getDataWithToken({ forceConsent: false });
-			}
-			break;
-		default:
-			logError("Unspecified client side error " + result);
-			dialogFallback();
-			break;
-	}
-}
-
-function getDataWithToken(options) {
-	Office.context.auth.getAccessTokenAsync(options,
-		function (result) {
-			if (result.status === "succeeded") {
-				var accessToken = result.value;
-				getData("/api/values", accessToken);
-			}
-			else {
-				handleClientSideErrors(result);
-			}
-		});
-}
 
 // Displays the data, assumed to be an array.
 function showResult(data) {
