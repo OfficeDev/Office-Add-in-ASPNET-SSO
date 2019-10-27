@@ -137,7 +137,7 @@ Version  | Date | Comments
 
 	> Note: The **Application (client) ID** is the "audience" value when other applications, such as the Office host application (e.g., PowerPoint, Word, Excel), seek authorized access to the application. It is also the "client ID" of the application when it, in turn, seeks authorized access to Microsoft Graph.
 
-3. Still in the web.config, replace the placeholder `{O365 tenancy GUID here}` in the **ida:Issuer**  value with the **Directory (tenant) ID** that you copied when you registered the add-in.
+3. Still in the web.config, replace the placeholder `tenant_GUID_here` in the **ida:Issuer**  value with the **Directory (tenant) ID** that you copied when you registered the add-in.
 
 4. If for any reason you set the set SUPPORTED ACCOUNT TYPES to only accounts in your own organization when you registered the add-in, then you must also set **ida:TenantId** in the web.config to the **Directory (tenant) ID** that you copied when you registered the add-in. 
 
