@@ -20,22 +20,22 @@ extensions:
 ---
 # Office Add-in that that supports Single Sign-on to Office, the Add-in, and Microsoft Graph
 
-The `getAccessTokenAsync` API in Office.js enables users who are signed into Office to get access to an AAD-protected add-in and to Microsoft Graph without needing to sign-in again. This sample is built on ASP.NET and Microsoft Identity Library (MSAL) .NET. 
+The `getAccessToken` API in Office.js enables users who are signed into Office to get access to an AAD-protected add-in and to Microsoft Graph without needing to sign-in again. This sample is built on ASP.NET and Microsoft Identity Library (MSAL) .NET. 
 
- > Note: The `getAccessTokenAsync` API is in preview.
+ > Note: The `getAccessToken` API is in preview.
 
 ## Features
 
 Integrating data from online service providers increases the value and adoption of your add-ins. This code sample shows you how to connect your add-in to Microsoft Graph. Use this code sample to:
 
+* See how to use the Single Sign-on (SSO) API
 * Connect to Microsoft Graph from an Office Add-in.
+* Build an Add-in using ASP.NET MVC, MSAL 3.x.x for .NET, and Office.js. 
 * Use the MSAL.NET Library to implement the OAuth 2.0 authorization framework in an add-in.
 * Use the OneDrive REST APIs from Microsoft Graph.
-* Show a dialog using the Office UI namespace.
-* Build an Add-in using ASP.NET MVC, MSAL 3.x.x for .NET, and Office.js. 
+* See how an add-in can fall back to an interactive sign-in in scenarios where SSO is not supported.
+* Show a dialog using the Office UI namespace in scenarios where SSO is not supported.
 * Use add-in commands in an add-in.
-* See how to use the Single Sign-on (SSO) API
-* See how an add-in can fall back to an interactive sign-in in scenarios where SSO is not supported
 
 ## Applies to
 
@@ -68,7 +68,7 @@ Version  | Date | Comments
 1.0 | September 15, 2017 | Added support for 2FA.
 1.0 | December 8, 2017 | Added extensive error handling.
 1.0 | January 7, 2019 | Added information about web application security practices.
-1.1 | October 1, 2019 | Added Display Dialog API fall back.
+2.0 | October 1, 2019 | Added Display Dialog API fall back.
 
 ## Disclaimer
 
@@ -89,7 +89,6 @@ Version  | Date | Comments
  - API PERMISSIONS (Delegated permissions, not Application permissions):
 
      - **Files.Read.All**
-     - **User.Read**
      - **offline_access**
      - **openid**
      - **profile**
@@ -146,11 +145,10 @@ Version  | Date | Comments
 
     ```
     <WebApplicationInfo>
-      <Id>{application_GUID here}</Id>
-      <Resource>api://localhost:44355/{application_GUID here}</Resource>
+      <Id>$application_GUID here$</Id>
+      <Resource>api://localhost:44355/$application_GUID here$</Resource>
       <Scopes>
           <Scope>Files.Read.All</Scope>
-          <Scope>User.Read</Scope>
           <Scope>offline_access</Scope>
           <Scope>openid</Scope>
           <Scope>profile</Scope>
@@ -158,7 +156,7 @@ Version  | Date | Comments
     </WebApplicationInfo>
     ```
 
-6. Replace the placeholder “{application_GUID here}” *in both places* in the markup with the Application ID that you copied when you registered your add-in. The "{}" are not part of the ID, so do not include them. This is the same ID you used in for the ClientID and Audience in the web.config.
+6. Replace the placeholder “$application_GUID here$” *in both places* in the markup with the Application ID that you copied when you registered your add-in. The "$" signs are not part of the ID, so do not include them. This is the same ID you used in for the ClientID and Audience in the web.config.
 
 	> Note:  The **Resource** value is the **Application ID URI** you set when you registered the add-in. The **Scopes** section is used only to generate a consent dialog box if the add-in is sold through AppSource.
 
@@ -174,7 +172,7 @@ Version  | Date | Comments
 
 6. Press F5. 
 7. In the Office application, on the **Home** ribbon, select the **Show Add-in** in the **SSO ASP.NET** group to open the task pane add-in.
-8. Click the **Get My Files from OneDrive** button. If you are logged into Office with either a Work or School (Office 365) account or Microsoft Account, and SSO is working as expected, the first 10 file and folder names in your OneDrive for Business are displayed on the task pane. If you are not logged in, or you are in a scenario that does not support SSO, or SSO is not working for any reason, you will be prompted to log in. After you log in, the file and folder names appear.
+8. Click the **Get OneDrive File Names** button. If you are logged into Office with either a Work or School (Office 365) account or Microsoft Account, and SSO is working as expected, the first 10 file and folder names in your OneDrive for Business are displayed on the task pane. If you are not logged in, or you are in a scenario that does not support SSO, or SSO is not working for any reason, you will be prompted to log in. After you log in, the file and folder names appear.
 
 ## Security note
 
