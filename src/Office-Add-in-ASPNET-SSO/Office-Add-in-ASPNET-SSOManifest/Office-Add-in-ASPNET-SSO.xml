@@ -242,7 +242,6 @@
 				<bt:Image id="Contoso.tpicon_80x80" DefaultValue="~remoteAppUrl/Images/Button80x80.png" />
 			</bt:Images>
 			<bt:Urls>
-				<bt:Url id="Contoso.DesktopFunctionFile.Url" DefaultValue="~remoteAppUrl/Functions/FunctionFile.html" />
 				<bt:Url id="Contoso.Taskpane.Url" DefaultValue="~remoteAppUrl/home/index" />
 				<bt:Url id="Contoso.GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812" />
 			</bt:Urls>
@@ -259,8 +258,8 @@
 			</bt:LongStrings>
 		</Resources>
 		<WebApplicationInfo>
-			<Id>16b7effb-0b0e-49e0-9a55-1b6363c11d3a</Id>
-			<Resource>api://localhost:44355/16b7effb-0b0e-49e0-9a55-1b6363c11d3a</Resource>
+			<Id>$application_GUID here$</Id>
+			<Resource>api://localhost:44355/$application_GUID here$</Resource>
 			<Scopes>
 				<Scope>openid</Scope>
 				<Scope>offline_access</Scope>
