@@ -18,7 +18,7 @@ var retryGetAccessToken = 0;
 
 async function getGraphData() {
     try {
-        let bootstrapToken = await OfficeRuntime.auth.getAccessToken({ allowSignInPrompt: true });
+        let bootstrapToken = await OfficeRuntime.auth.getAccessToken({ allowSignInPrompt: true, forMSGraphAccess: true });
 
         // The /api/values controller will make the token exchange and use the 
         // access token it gets back to make the call to MS Graph.
