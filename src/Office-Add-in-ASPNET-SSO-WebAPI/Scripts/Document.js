@@ -31,18 +31,18 @@ function writeFileNamesToOfficeDocument(result) {
 function writeFileNamesToWorksheet(result) {
 
      return Excel.run(function (context) {
-        const sheet = context.workbook.worksheets.getActiveWorksheet();
+        var sheet = context.workbook.worksheets.getActiveWorksheet();
 
-        let filenames = [];
-        let i;
+        var filenames = [];
+        var i;
         for (i = 0; i < result.length; i++) {
             var innerArray = [];
             innerArray.push(result[i]);
             filenames.push(innerArray);
         }
 
-        const rangeAddress = `B5:B${5 + (result.length-1)}`;
-        const range = sheet.getRange(rangeAddress);
+        var rangeAddress = `B5:B${5 + (result.length-1)}`;
+        var range = sheet.getRange(rangeAddress);
         range.values = filenames;
         range.format.autofitColumns();
 
@@ -54,8 +54,8 @@ function writeFileNamesToDocument(result) {
 
      return Word.run(function (context) {
 
-        const documentBody = context.document.body;
-        for (let i = 0; i < result.length; i++) {
+        var documentBody = context.document.body;
+        for (var i = 0; i < result.length; i++) {
             documentBody.insertParagraph(result[i], "End");
         }
 
@@ -65,8 +65,8 @@ function writeFileNamesToDocument(result) {
 
 function writeFileNamesToPresentation(result) {
 
-    let fileNames = "";
-    for (let i = 0; i < result.length; i++) {
+    var fileNames = "";
+    for (var i = 0; i < result.length; i++) {
         fileNames += result[i] + '\n';
     }
 
