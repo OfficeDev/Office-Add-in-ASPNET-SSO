@@ -124,7 +124,7 @@ function handleServerSideErrors(result) {
         // with "The provided value for the 'assertion' is not valid. The assertion has expired."
         // Retry the call of getAccessToken (no more than once). This time Office will return a 
         // new unexpired bootstrap token.
-        if ((exceptionMessage.indexOf("The provided value for the 'assertion' is not valid. The assertion has expired.") !== -1)
+        if ((exceptionMessage.indexOf("AADSTS500133") !== -1)
             && (retryGetAccessToken <= 0))
         {
             retryGetAccessToken++;
