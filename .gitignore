@@ -250,3 +250,7 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# tsc generated files
+ssoAuth.js
+ssoAuth.js.map
