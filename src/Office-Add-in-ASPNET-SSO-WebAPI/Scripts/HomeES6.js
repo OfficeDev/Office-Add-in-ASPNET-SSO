@@ -5,7 +5,9 @@
 	and to pass that token to the server to get Microsoft Graph data. 
 */
 
-
+if (!window.Promise) {
+    window.Promise = Office.Promise;
+}
 
 Office.initialize = function (reason) {
 

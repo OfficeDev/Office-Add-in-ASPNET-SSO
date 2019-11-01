@@ -41,7 +41,7 @@ function writeFileNamesToWorksheet(result) {
             filenames.push(innerArray);
         }
 
-        var rangeAddress = `B5:B${5 + (result.length-1)}`;
+        var rangeAddress = "B5:B" + (5 + (result.length - 1)).toString();
         var range = sheet.getRange(rangeAddress);
         range.values = filenames;
         range.format.autofitColumns();

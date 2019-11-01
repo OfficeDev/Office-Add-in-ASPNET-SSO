@@ -14,7 +14,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI
             TokenValidationParameters tvps = new TokenValidationParameters
             {
 				ValidAudience = ConfigurationManager.AppSettings["ida:Audience"],
-				ValidIssuer = ConfigurationManager.AppSettings["ida:Issuer"],
+                ValidateIssuer = false,
 				SaveSigninToken = true
 			};
 
