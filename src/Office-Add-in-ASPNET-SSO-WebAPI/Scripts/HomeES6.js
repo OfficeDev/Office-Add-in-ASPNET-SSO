@@ -5,6 +5,7 @@
 	and to pass that token to the server to get Microsoft Graph data. 
 */
 
+// To support IE (which uses ES5), we have to create a Promise object for the global context.
 if (!window.Promise) {
     window.Promise = Office.Promise;
 }

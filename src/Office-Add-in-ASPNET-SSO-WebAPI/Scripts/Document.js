@@ -3,6 +3,7 @@
 "use strict";
 
 
+
 function writeFileNamesToOfficeDocument(result) {
 
     return new OfficeExtension.Promise(function (resolve, reject) {

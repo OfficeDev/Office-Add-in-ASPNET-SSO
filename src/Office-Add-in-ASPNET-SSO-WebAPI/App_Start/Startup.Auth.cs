@@ -14,6 +14,8 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI
             TokenValidationParameters tvps = new TokenValidationParameters
             {
 				ValidAudience = ConfigurationManager.AppSettings["ida:Audience"],
+                // Microsoft Accounts have an issuer GUID that is different from any organizational tenant GUID,
+                // so to support both kinds of accounts, we do not validate the issuer.
                 ValidateIssuer = false,
 				SaveSigninToken = true
 			};
