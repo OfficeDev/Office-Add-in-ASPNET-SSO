@@ -131,17 +131,21 @@ Version  | Date | Comments
 
 ### Configure the solution
 
-1. In **Visual Studio**, choose the **Office-Add-in-Microsoft-Graph-ASPNETWebAPI** project. In **Properties**, ensure **SSL Enabled** is **True**. Verify that the **SSL URL** is `http://localhost:44355/`.
+1. In **Visual Studio**, right-click the top node in **Solution Explorer** (the Solution node, not either of the project nodes), and then select **Set startup projects**.
 
-2. In web.config, use the values that you copied in earlier. Set both the **ida:ClientID** and the **ida:Audience** to your **Application (client) ID**, and set **ida:Password** to your client secret. 
+2. Under **Common Properties**, select **Startup Project**, and then **Multiple startup projects**. Ensure that the **Action** for both projects is set to **Start**, and that the project that ends in "...WebAPI" is listed first. 
+
+3. Still in **Solution Explorer**, choose the **Office-Add-in-Microsoft-Graph-ASPNETWebAPI** project. In **Properties**, ensure **SSL Enabled** is **True**. Verify that the **SSL URL** is `http://localhost:44355/`.
+
+4. In web.config, use the values that you copied in earlier. Set both the **ida:ClientID** and the **ida:Audience** to your **Application (client) ID**, and set **ida:Password** to your client secret. 
 
 	> Note: The **Application (client) ID** is the "audience" value when other applications, such as the Office host application (e.g., PowerPoint, Word, Excel), seek authorized access to the application. It is also the "client ID" of the application when it, in turn, seeks authorized access to Microsoft Graph.
 
-3. Still in the web.config, replace the placeholder `tenant_GUID_here` in the **ida:Issuer**  value with the **Directory (tenant) ID** that you copied when you registered the add-in.
+5. Still in the web.config, replace the placeholder `tenant_GUID_here` in the **ida:Issuer**  value with the **Directory (tenant) ID** that you copied when you registered the add-in.
 
-4. If for any reason you set the set SUPPORTED ACCOUNT TYPES to only accounts in your own organization when you registered the add-in, then you must also set **ida:TenantId** in the web.config to the **Directory (tenant) ID** that you copied when you registered the add-in. 
+6. If for any reason you set the set SUPPORTED ACCOUNT TYPES to only accounts in your own organization when you registered the add-in, then you must also set **ida:TenantId** in the web.config to the **Directory (tenant) ID** that you copied when you registered the add-in. 
 
-5. In the add-in project, open the add-in manifest file “Office-Add-in-ASPNET-SSO.xml” and then scroll to the bottom of the file. Just above the end `</VersionOverrides>` tag, you'll find the following markup:
+7. In the add-in project, open the add-in manifest file “Office-Add-in-ASPNET-SSO.xml” and then scroll to the bottom of the file. Just above the end `</VersionOverrides>` tag, you'll find the following markup:
 
     ```
     <WebApplicationInfo>
@@ -156,7 +160,7 @@ Version  | Date | Comments
     </WebApplicationInfo>
     ```
 
-6. Replace the placeholder “$application_GUID here$” *in both places* in the markup with the Application ID that you copied when you registered your add-in. The "$" signs are not part of the ID, so do not include them. This is the same ID you used in for the ClientID and Audience in the web.config.
+8. Replace the placeholder “$application_GUID here$” *in both places* in the markup with the Application ID that you copied when you registered your add-in. The "$" signs are not part of the ID, so do not include them. This is the same ID you used in for the ClientID and Audience in the web.config.
 
 	> Note:  The **Resource** value is the **Application ID URI** you set when you registered the add-in. The **Scopes** section is used only to generate a consent dialog box if the add-in is sold through AppSource.
 
