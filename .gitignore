@@ -252,5 +252,5 @@ paket-files/
 *.sln.iml
 
 # tsc generated files
-ssoAuth.js
-ssoAuth.js.map
+Home.js
+Home.js.map
