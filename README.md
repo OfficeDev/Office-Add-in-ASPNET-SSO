@@ -141,8 +141,6 @@ Version  | Date | Comments
 
 	> Note: The **Application (client) ID** is the "audience" value when other applications, such as the Office host application (e.g., PowerPoint, Word, Excel), seek authorized access to the application. It is also the "client ID" of the application when it, in turn, seeks authorized access to Microsoft Graph.
 
-5. Still in the web.config, replace the placeholder `tenant_GUID_here` in the **ida:Issuer**  value with the **Directory (tenant) ID** that you copied when you registered the add-in.
-
 6. If for any reason you set the set SUPPORTED ACCOUNT TYPES to only accounts in your own organization when you registered the add-in, then you must also set **ida:TenantId** in the web.config to the **Directory (tenant) ID** that you copied when you registered the add-in. 
 
 7. In the add-in project, open the add-in manifest file “Office-Add-in-ASPNET-SSO.xml” and then scroll to the bottom of the file. Just above the end `</VersionOverrides>` tag, you'll find the following markup:
