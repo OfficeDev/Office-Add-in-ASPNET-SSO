@@ -68,7 +68,7 @@ Version  | Date | Comments
 1.0 | September 15, 2017 | Added support for 2FA.
 1.0 | December 8, 2017 | Added extensive error handling.
 1.0 | January 7, 2019 | Added information about web application security practices.
-2.0 | October 1, 2019 | Added Display Dialog API fall back.
+2.0 | November 5, 2019 | Added Display Dialog API fall back and use new version of SSO API.
 
 ## Disclaimer
 
@@ -82,19 +82,19 @@ Version  | Date | Comments
  
 1. Register your application using the [Azure Management Portal](https://manage.windowsazure.com). **Log in with the identity of an administrator of your Office 365 tenancy to ensure that you are working in an Azure Active Directory that is associated with that tenancy.** To learn how to register your application, see [Register an application with the Microsoft Identity Platform](https://docs.microsoft.com/graph/auth-register-app-v2). Use the following settings:
 
- - NAME: Office-Add-in-ASPNET-SSO
- - REDIRCT URI: https://localhost:44355/AzureADAuth/Authorize
- - SUPPORTED ACCOUNT TYPES: "Accounts in any organizational directory and personal Microsoft accounts (e.g. Skype, Xbox, Outlook.com)"
- - IMPLICIT GRANT: Do not enable any Implicit Grant options
- - API PERMISSIONS (Delegated permissions, not Application permissions):
+ - **NAME**: Office-Add-in-ASPNET-SSO
+ - **REDIRCT URI**: https://localhost:44355/AzureADAuth/Authorize
+ - **SUPPORTED ACCOUNT TYPES**: "Accounts in any organizational directory and personal Microsoft accounts (e.g. Skype, Xbox, Outlook.com)" (If you want the add-in to be usable only by users in the tenancy where you are registering it, you can choose "Accounts in this organizational directory only" instead, but you will need to go through some additional setup steps. See **Setup for single-tenant** below.)
+ - **IMPLICIT GRANT**: Do not enable any Implicit Grant options
+ - **API PERMISSIONS** (Delegated permissions, not Application permissions):
 
      - **Files.Read.All**
      - **offline_access**
      - **openid**
      - **profile**
 
-  > Note: After you register your application, copy the **Application (client) ID** and the **Directory (tenant) ID** on the **Overview** blade of the App Registration in the Azure Management Portal. When you create the client secret on the **Certificates & secrets** blade, copy it too. 
-	 
+  > Note: After you register your application, copy the **Application (client) ID** on the **Overview** blade of the App Registration in the Azure Management Portal. When you create the client secret on the **Certificates & secrets** blade, copy it too. 
+
 2. Still in the Azure App registration portal, when you've completed the preceding parts of the registration, select **Expose an API** under **Manage**. Select the **Set** link to generate the Application ID URI in the form "api://$App ID GUID$", where $App ID GUID$ is the **Application (client) ID**. Insert `localhost:44355/` (note the a forward slash "/" appended to the end) between the double forward slashes and the GUID. The entire ID should have the form `api://localhost:44355/$App ID GUID$`; for example `api://localhost:44355/c6c1f32b-5e55-4997-881a-753cc1d563b7`. 
 
 3. Select the **Add a scope** button. In the panel that opens, enter `access_as_user` as the **Scope** name.
@@ -139,11 +139,9 @@ Version  | Date | Comments
 
 4. In web.config, use the values that you copied in earlier. Set both the **ida:ClientID** and the **ida:Audience** to your **Application (client) ID**, and set **ida:Password** to your client secret. 
 
-	> Note: The **Application (client) ID** is the "audience" value when other applications, such as the Office host application (e.g., PowerPoint, Word, Excel), seek authorized access to the application. It is also the "client ID" of the application when it, in turn, seeks authorized access to Microsoft Graph.
+  > Note: The **Application (client) ID** is the "audience" value when other applications, such as the Office host application (e.g., PowerPoint, Word, Excel), seek authorized access to the application. It is also the "client ID" of the application when it, in turn, seeks authorized access to Microsoft Graph.
 
-6. If for any reason you set the set SUPPORTED ACCOUNT TYPES to only accounts in your own organization when you registered the add-in, then you must also set **ida:TenantId** in the web.config to the **Directory (tenant) ID** that you copied when you registered the add-in. 
-
-7. In the add-in project, open the add-in manifest file “Office-Add-in-ASPNET-SSO.xml” and then scroll to the bottom of the file. Just above the end `</VersionOverrides>` tag, you'll find the following markup:
+6. In the add-in project, open the add-in manifest file “Office-Add-in-ASPNET-SSO.xml” and then scroll to the bottom of the file. Just above the end `</VersionOverrides>` tag, you'll find the following markup:
 
     ```
     <WebApplicationInfo>
@@ -160,7 +158,14 @@ Version  | Date | Comments
 
 8. Replace the placeholder “$application_GUID here$” *in both places* in the markup with the Application ID that you copied when you registered your add-in. The "$" signs are not part of the ID, so do not include them. This is the same ID you used in for the ClientID and Audience in the web.config.
 
-	> Note:  The **Resource** value is the **Application ID URI** you set when you registered the add-in. The **Scopes** section is used only to generate a consent dialog box if the add-in is sold through AppSource.
+  > Note:  The **Resource** value is the **Application ID URI** you set when you registered the add-in. The **Scopes** section is used only to generate a consent dialog box if the add-in is sold through AppSource.
+
+#### Setup for single-tenant
+
+If you chose "Accounts in this organizational directory only" for **SUPPORTED ACCOUNT TYPES** when you registered the add-in, you need to take these additional setup steps:
+
+1. Go back to the Azure Portal and open the **Overview** blade of the add-in's registration. Copy the **Directory (tenant) ID**.
+2. In the web.config, replace the "commmon" in the value of **ida:Authority** with the GUID you copied in the preceding step. When you are finished the value should look similar to this: `<add key="ida:Authority" value="https://login.microsoftonline.com/12345678-91ab-cdef-0123-456789abcdef/oauth2/v2.0" />`.
 
 ### Run the solution
 

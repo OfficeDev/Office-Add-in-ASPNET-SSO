@@ -41,6 +41,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 			var cca = ConfidentialClientApplicationBuilder.Create(ConfigurationManager.AppSettings["ida:ClientID"])
                                                           .WithRedirectUri("https://localhost:44355")
                                                           .WithClientSecret(ConfigurationManager.AppSettings["ida:Password"])
+                                                          .WithAuthority(ConfigurationManager.AppSettings["ida:Authority"])
                                                           .Build();
 
             // MSAL.NET adds the profile, offline_access, and openid scopes itself. It will throw an error if you add

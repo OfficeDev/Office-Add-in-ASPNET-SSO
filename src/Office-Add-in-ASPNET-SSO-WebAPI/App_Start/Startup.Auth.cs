@@ -4,6 +4,7 @@ using System.Configuration;
 using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin.Security.Jwt;
 using Office_Add_in_ASPNET_SSO_WebAPI.App_Start;
+using System.Security.AccessControl;
 
 namespace Office_Add_in_ASPNET_SSO_WebAPI
 {
@@ -20,9 +21,13 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI
 				SaveSigninToken = true
 			};
 
-			app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
+            string[] endAuthoritySegments = { "oauth2/v2.0" };
+            string[] parsedAuthority = ConfigurationManager.AppSettings["ida:Authority"].Split(endAuthoritySegments, System.StringSplitOptions.None);
+            string wellKnownURL = parsedAuthority[0] + "v2.0/.well-known/openid-configuration";
+
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
 			{
-				AccessTokenFormat = new JwtFormat(tvps, new OpenIdConnectCachingSecurityTokenProvider("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration"))
+				AccessTokenFormat = new JwtFormat(tvps, new OpenIdConnectCachingSecurityTokenProvider(wellKnownURL))
 			});
 		}
 	}
