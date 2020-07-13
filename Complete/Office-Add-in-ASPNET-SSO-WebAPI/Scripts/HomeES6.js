@@ -83,15 +83,15 @@ function handleClientSideErrors(error) {
             showResult(["You can use many of the add-ins functions even though you have not granted consent. If you want to grant consent, press the Get OneDrive File Names button again."]);
             break;
         case 13006:
-            // Only seen in Office on the Web.
-            showResult(["Office on the Web is experiencing a problem. Please sign out of Office, close the browser, and then start again."]);
+            // Only seen in Office on the web.
+            showResult(["Office on the web is experiencing a problem. Please sign out of Office, close the browser, and then start again."]);
             break;
         case 13008:
-            // Only seen in Office on the Web.
+            // Only seen in Office on the web.
             showResult(["Office is still working on the last operation. When it completes, try this operation again."]);
             break;
         case 13010:
-            // Only seen in Office on the Web.
+            // Only seen in Office on the web.
             showResult(["Follow the instructions to change your browser's zone configuration."]);
             break;
         default:

@@ -18,9 +18,9 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 		Uri loginRedirectUri => new Uri(Url.Action(nameof(Authorize), "AzureADAuth", null, Request.Url.Scheme));
 
 		/// <summary>
-		/// Logs the user into Office 365.
+		/// Logs the user into Microsoft 365.
 		/// </summary>
-		/// <returns>A redirect to the Office 365 login page.</returns>
+		/// <returns>A redirect to the Microsoft 365 login page.</returns>
 		public async Task<ActionResult> Login()
 		{
 			if (string.IsNullOrEmpty(Settings.AzureADClientId) || string.IsNullOrEmpty(Settings.AzureADClientSecret))
