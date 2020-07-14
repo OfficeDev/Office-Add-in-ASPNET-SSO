@@ -175,9 +175,8 @@ Strings.OfficeOM.L_GetSelectionNotSupported='The current selection is not suppor
 Strings.OfficeOM.L_EventHandlerAdditionFailed='Failed to add the event handler.';
 Strings.OfficeOM.L_DialogNavigateError='Dialog Navigation Error';
 Strings.OfficeOM.L_InvalidResourceUrl='Invalid application resource Url provided.';
-Strings.OfficeOM.L_InvalidOrTimedOutSessionMessage='Your Office browser session has expired or is invalid. To continue, refresh the page.';
+Strings.OfficeOM.L_InvalidOrTimedOutSessionMessage='Your Office session has expired or is invalid. To continue, refresh the page.';
 Strings.OfficeOM.L_DialogAlreadyOpened='The operation failed because this add-in already has an active dialog.';
 Strings.OfficeOM.L_NewWindowCrossZone='The security settings in your browser prevent us from creating a dialog box. Try a different browser, or {0} so that \'{1}\' and the domain shown in your address bar are in the same security zone.';
 Strings.OfficeOM.L_NoCapability='You don\'t have sufficient permissions for this action.';
 Strings.OfficeOM.L_InvalidSelectionForBindingType='A binding cannot be created with the current selection and the specified binding type.';
-
