@@ -27,8 +27,6 @@ There are two versions of the sample in this repo, one of which has its own READ
 - In the **Begin** folder is the starting point for the SSO walkthrough at at [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet). Please follow the instructions in the article.
 - In the **Complete** folder is the completed sample you would have if you completed the walkthrough. To use this version, follow the instructions in the article [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet), but substitute "Complete" for "Begin" in those instructions and skip the sections **Code the client-side** and **Code the server-side**.
 
- > Note: The `getAccessToken` API is in preview.
-
 ## Features
 
 Integrating data from online service providers increases the value and adoption of your add-ins. This code sample shows you how to connect your add-in to Microsoft Graph. Use this code sample to:
@@ -74,6 +72,7 @@ Version  | Date | Comments
 1.0 | December 8, 2017 | Added extensive error handling.
 1.0 | January 7, 2019 | Added information about web application security practices.
 2.0 | November 5, 2019 | Added Display Dialog API fall back and use new version of SSO API.
+2.1 | August 11, 2020 | Removed preview note because the APIs have released.
 
 ## Disclaimer
 
