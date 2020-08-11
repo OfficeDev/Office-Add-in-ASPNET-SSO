@@ -20,7 +20,7 @@ Office.initialize = function (reason) {
 var retryGetAccessToken = 0;
 
 async function getGraphData() {
-    await getDataWithToken({ allowSignInPrompt: true, forMSGraphAccess: true });
+    await getDataWithToken({ allowSignInPrompt: true, allowConsentPrompt: true, forMSGraphAccess: true });
 }
 
 async function getDataWithToken(options) {
