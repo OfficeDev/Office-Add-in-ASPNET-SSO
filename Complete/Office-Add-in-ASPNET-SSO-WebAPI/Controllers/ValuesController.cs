@@ -36,7 +36,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
             UserAssertion userAssertion = new UserAssertion(bootstrapContext);
 
 			var cca = ConfidentialClientApplicationBuilder.Create(ConfigurationManager.AppSettings["ida:ClientID"])
-                                                          .WithRedirectUri("https://localhost:44355")
+                                                          .WithRedirectUri(ConfigurationManager.AppSettings["ida:Domain"])
                                                           .WithClientSecret(ConfigurationManager.AppSettings["ida:Password"])
                                                           .WithAuthority(ConfigurationManager.AppSettings["ida:Authority"])
                                                           .Build();
