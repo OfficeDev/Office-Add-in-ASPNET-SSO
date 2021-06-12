@@ -24,8 +24,8 @@ The `getAccessToken` API in Office.js enables users who are signed into Office t
 
 There are two versions of the sample in this repo, one of which has its own README file:
 
-- In the **Begin** folder is the starting point for the SSO walkthrough at at [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet). Please follow the instructions in the article.
-- In the **Complete** folder is the completed sample you would have if you completed the walkthrough. To use this version, follow the instructions in the article [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet), but substitute "Complete" for "Begin" in those instructions and skip the sections **Code the client-side** and **Code the server-side**.
+- In the **Before** folder is the starting point for the SSO walkthrough at at [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet). Please follow the instructions in the article.
+- In the **Complete** folder is the completed sample you would have if you completed the walkthrough. To use this version, follow the instructions in the article [Create an ASP.NET Office Add-in that uses single sign-on](https://docs.microsoft.com/office/dev/add-ins/develop/create-sso-office-add-ins-aspnet), but substitute "Complete" for "Before" in those instructions and skip the sections **Code the client-side** and **Code the server-side**.
 
 ## Features
 
