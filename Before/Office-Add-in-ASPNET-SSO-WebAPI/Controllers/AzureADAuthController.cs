@@ -29,11 +29,14 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 				return View();
 			}
 
-			ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder.Create(Settings.AzureADClientId);
+			ConfidentialClientApplicationBuilder clientBuilder = ConfidentialClientApplicationBuilder
+				.Create(Settings.AzureADClientId)
+				.WithClientSecret(Settings.AzureADClientSecret);
+				                                                         ;
 			ConfidentialClientApplication clientApp = (ConfidentialClientApplication)clientBuilder.Build();
 
 			// Generate the parameterized URL for Azure login.
-			string[] graphScopes = { "https://graph.microsoft.com/Files.Read.All", "https://graph.microsoft.com/User.Read" };
+			string[] graphScopes = { "https://graph.microsoft.com/Files.Read.All" };
 			var urlBuilder = clientApp.GetAuthorizationRequestUrl(graphScopes);
 			urlBuilder.WithRedirectUri(loginRedirectUri.ToString());
 			urlBuilder.WithAuthority(Settings.AzureADAuthority);
@@ -57,7 +60,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
 			clientBuilder.WithAuthority(Settings.AzureADAuthority);
 
 			ConfidentialClientApplication clientApp = (ConfidentialClientApplication)clientBuilder.Build();
-			string[] graphScopes = { "Files.Read.All", "User.Read" };
+			string[] graphScopes = { "Files.Read.All" };
 
 			// Get and save the token.
 			var authResultBuilder = clientApp.AcquireTokenByAuthorizationCode(
