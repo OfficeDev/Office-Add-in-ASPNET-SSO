@@ -24,7 +24,20 @@ async function getGraphData() {
 }
 
 async function getDataWithToken(options) {
+
+    // The following method will only be called when you are testing the fallback path.
+    // See the try block below.
+    function MockSSOError(code) {
+        this.code = code;
+    }
+
     try {
+        /* 
+            To test the fallback path, force the SSO path to fail by uncommenting the 
+            following line.
+            throw new MockSSOError("13003");
+        */
+
         let bootstrapToken = await OfficeRuntime.auth.getAccessToken(options);
 
         // The /api/values controller will make the token exchange and use the 

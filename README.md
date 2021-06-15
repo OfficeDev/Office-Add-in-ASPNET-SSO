@@ -70,7 +70,7 @@ Version  | Date | Comments
 1.0 | January 7, 2019 | Added information about web application security practices.
 2.0 | November 5, 2019 | Added Display Dialog API fall back and use new version of SSO API.
 2.1 | August 11, 2020 | Removed preview note because the APIs have released.
-2.2 | June 15, 2021 | Updated NuGet packages.
+2.2 | June 15, 2021 | Updated NuGet packages and adjust code for breaking changes.
 
 ## Disclaimer
 

@@ -31,7 +31,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
             }
 
             // Assemble all the information that is needed to get a token for Microsoft Graph using the "on behalf of" flow.
-            // Beginning with MSAL.NET 3.x.x, the bootstrapContext is just the bootstrap token itself.
+            // Beginning with MSAL.NET 3.x.x and later, the bootstrapContext is just the bootstrap token itself.
             string bootstrapContext = ClaimsPrincipal.Current.Identities.First().BootstrapContext.ToString(); 
             UserAssertion userAssertion = new UserAssertion(bootstrapContext);
 
@@ -41,8 +41,7 @@ namespace Office_Add_in_ASPNET_SSO_WebAPI.Controllers
                                                           .WithAuthority(ConfigurationManager.AppSettings["ida:Authority"])
                                                           .Build();
 
-            // MSAL.NET adds the profile, offline_access, and openid scopes itself. It will throw an error if you add
-            // them redundantly here.
+            // MSAL.NET adds the profile itself. It will throw an error if you add it redundantly here.
 			string[] graphScopes = { "https://graph.microsoft.com/Files.Read.All" };
 
 			// Get the access token for Microsoft Graph.
